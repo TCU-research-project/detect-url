@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import api from '@/utils/api';
 
 export default function SearchInput() {
   const [url, setUrl] = useState('');
@@ -7,8 +8,10 @@ export default function SearchInput() {
     setUrl(event.target.value);
   };
 
-  const handleSubmit = (event) => {
-    alert('A name was submitted: ' + url);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const response = await api.post('/check_url', { url: url });
+    console.log(response);
     event.preventDefault();
   };
   return (
@@ -39,7 +42,7 @@ export default function SearchInput() {
             type="search"
             id="default-search"
             class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Enter URL for testing"
+            placeholder="Enter URL to check"
             value={url}
             onChange={handleChange}
             required
