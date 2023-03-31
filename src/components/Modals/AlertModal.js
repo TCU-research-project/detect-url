@@ -4,7 +4,7 @@ export default function AlertModal() {
       <div
         id="defaultModal"
         tabindex="-1"
-        ariaHidden="true"
+        aria-hidden="true"
         className="flex justify-center items-center fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full bg-black bg-opacity-50"
       >
         <div className="relative w-full h-full max-w-2xl md:h-auto">
@@ -19,7 +19,7 @@ export default function AlertModal() {
                 data-modal-hide="defaultModal"
               >
                 <svg
-                  ariaHidden="true"
+                  aria-hidden="true"
                   className="w-5 h-5"
                   fill="currentColor"
                   viewBox="0 0 20 20"
