@@ -23,7 +23,6 @@ export const fetchApi = async (
   data = null,
   method = 'get',
   headers = {},
-  isCache = false,
 ) => {
   const body = {
     method: method,
