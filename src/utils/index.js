@@ -1,40 +1,39 @@
-import { AxiosResponse } from 'axios';
 import request from './api';
 
 export const handleApi = async (
-  func,
-  speadData = true,
+	func,
+	speadData = true,
 ) => {
-  if (!func) return { success: false };
-  try {
-    let data = await func();
-    if (!speadData) {
-      return { success: true, data };
-    }
-    return { success: true, ...data };
-  } catch (error) {
-    let dataError = error?.response?.data;
-    return { success: false, error: dataError };
-  }
+	if (!func) return { success: false };
+	try {
+		let data = await func();
+		if (!speadData) {
+			return { success: true, data };
+		}
+		return { success: true, ...data };
+	} catch (error) {
+		let dataError = error?.response?.data;
+		return { success: false, error: dataError };
+	}
 };
 
 export const fetchApi = async (
-  endPoint = '',
-  data = null,
-  method = 'get',
-  headers = {},
+	endPoint = '',
+	data = null,
+	method = 'get',
+	headers = {},
 ) => {
-  const body = {
-    method: method,
-    headers: {
-      'Content-Type': 'application/json',
-      ...headers,
-    },
-    data: data,
-  };
+	const body = {
+		method: method,
+		headers: {
+			'Content-Type': 'application/json',
+			...headers,
+		},
+		data: data,
+	};
 
-  const response = await request(endPoint, body);
+	const response = await request(endPoint, body);
 
 
-  return response;
+	return response;
 };
