@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import api from '@/utils/api';
+import { detectUrl } from '@/common/api/url';
+import { handleApi } from '@/utils';
 
 export default function SearchInput() {
   const [url, setUrl] = useState('');
@@ -10,7 +11,7 @@ export default function SearchInput() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const response = await api.post('/check_url', { url: url });
+    const response = await handleApi(detectUrl(url));
     console.log(response);
     event.preventDefault();
   };
