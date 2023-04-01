@@ -1,18 +1,19 @@
 import SearchInput from '@/components/SearchInput';
-import { Modal, Button, Divider } from 'antd';
+import { Modal, Button, Divider, message } from 'antd';
 import ListArticle from '@/components/ListArticle';
 import Table from '@/components/Table';
 import AppLayout from '@/components/Layout';
 import { getListUrl } from '@/common/api/url';
 import { handleApi } from '@/utils';
 import dynamic from 'next/dynamic';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 const QuantityChart = dynamic(import('@/components/Charts/QuantityChart'), { ssr: false });
 
 const PercentChart = dynamic(import('@/components/Charts/PercentChart'), { ssr: false });
 export default function Home() {
 	const [status, setStatus] = useState();
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [listWebsite, setListWebsite] = useState([]);
 
 	const showModal = () => {
 		setIsModalOpen(true);
@@ -29,6 +30,20 @@ export default function Home() {
 	const handleSetStatus = (value) => {
 		setStatus(value);
 	};
+
+	const handleListWebsite = async () => {
+		const response = await handleApi(getListUrl());
+		const { data } = response;
+		if (data) {
+			setListWebsite(data.data.data);
+		} else {
+			message.error("Error get list website");
+		}
+	};
+
+	useEffect(() => {
+		handleListWebsite();
+	}, []);
 
 	return (
 		<>
@@ -81,7 +96,7 @@ export default function Home() {
 							<h2 className="text-xl font-bold">List of malicious URL</h2>
 						</div>
 						<div className="mt-4">
-							<Table />
+							<Table listData={listWebsite} />
 						</div>
 					</div>
 					<div className="overflow-y-auto">
