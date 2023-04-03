@@ -12,8 +12,11 @@ const QuantityChart = dynamic(import('@/components/Charts/QuantityChart'), { ssr
 const PercentChart = dynamic(import('@/components/Charts/PercentChart'), { ssr: false });
 export default function Home() {
 	const [status, setStatus] = useState();
+	const [page, setPage] = useState(1);
+	const [pageSize, setPageSize] = useState(20);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [listWebsite, setListWebsite] = useState([]);
+	const [listSize, setListSize] = useState(0);
 
 	const showModal = () => {
 		setIsModalOpen(true);
@@ -31,11 +34,20 @@ export default function Home() {
 		setStatus(value);
 	};
 
+	const handleSetPage = (page) => {
+		setPage(page);
+	};
+
+	const handleSetPageSize = (pageSize) => {
+		setPageSize(pageSize);
+	};
+
 	const handleListWebsite = async () => {
-		const response = await handleApi(getListUrl());
+		const response = await handleApi(getListUrl(page, pageSize));
 		const { data } = response;
 		if (data) {
 			setListWebsite(data.data.data);
+			setListSize(data.data.count);
 		} else {
 			message.error("Error get list website");
 		}
@@ -43,7 +55,7 @@ export default function Home() {
 
 	useEffect(() => {
 		handleListWebsite();
-	}, []);
+	}, [page, pageSize]);
 
 	return (
 		<>
@@ -96,7 +108,7 @@ export default function Home() {
 							<h2 className="text-xl font-bold">List of malicious URL</h2>
 						</div>
 						<div className="mt-4">
-							<Table listData={listWebsite} />
+							<Table listData={listWebsite} onSetPage={handleSetPage} onSetPageSize={handleSetPageSize} total={listSize} />
 						</div>
 					</div>
 					<div className="overflow-y-auto">

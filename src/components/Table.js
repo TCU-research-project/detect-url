@@ -1,7 +1,7 @@
-import Link from "next/link";
+import { Pagination } from "antd";
 
 export default function Table(props) {
-	const { listData } = props;
+	const { listData, onSetPage, onSetPageSize, total } = props;
 	return (
 		<>
 			<div className="overflow-auto rounded-lg shadow hidden md:block">
@@ -32,6 +32,10 @@ export default function Table(props) {
 					</tbody>
 				</table>
 			</div>
+			<div className="flex justify-center mt-2">
+				<Pagination defaultCurrent={1} total={total} onChange={(page, pageSize) => { onSetPage(page); onSetPageSize(pageSize); }} />
+			</div>
+
 		</>
 	);
 }
