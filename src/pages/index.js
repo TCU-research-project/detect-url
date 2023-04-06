@@ -1,5 +1,5 @@
 import SearchInput from '@/components/SearchInput';
-import { Modal, Button, Divider, message } from 'antd';
+import { Modal, Button, Divider, message, Card } from 'antd';
 import ListArticle from '@/components/ListArticle';
 import Table from '@/components/Table';
 import AppLayout from '@/components/Layout';
@@ -83,9 +83,10 @@ export default function Home() {
 				</div>
 				<div></div>
 			</div>
-			<div className="grid grid-cols-2 gap-4 mt-16">
-				<div>
-					<h3 className="text-center text-4xl">Tỉ lệ phát hiện chính xác</h3>
+			<div className="grid grid-cols-2 gap-4 mt-16 mx-2">
+				<Card title={<>
+					<div className='text-center'>Tỉ lệ phát hiện chính xác</div>
+				</>} bordered={true} style={{}}>
 					<div className="flex mt-2">
 						<PercentChart />
 						<div className="flex items-center">
@@ -109,35 +110,44 @@ export default function Home() {
 							</div>
 						</div>
 					</div>
-				</div>
+				</Card>
+
 
 				<div>
-					<h3 className="text-center text-4xl">Số lượng website phát hiện gần đây</h3>
-					<div className="chart mt-2">
-						<QuantityChart />
-					</div>
+					<Card title={<>
+						<div className='text-center'>Số lượng website phát hiện gần đây</div>
+					</>} bordered={true} style={{}}>
+						<div className="chart mt-2">
+							<QuantityChart />
+						</div>
+					</Card>
+
 				</div>
 			</div>
-			<div className="relative mt-4 parent">
-				<div className="grid grid-cols-4 gap-4 p-4 child">
-					<div className="col-span-3 overflow-y-auto p-2">
-						<div className="ml-4">
-							<h2 className="text-xl font-bold">Danh sách website đã phát hiện</h2>
+			<Card className='mx-2 my-2'>
+				<div className="relative mt-4 parent">
+					<div className="grid grid-cols-4 gap-4 p-4 child">
+						<div className="col-span-3 overflow-y-auto p-2">
+							<div className="ml-4">
+								<h2 className="text-xl font-bold">Danh sách website đã phát hiện</h2>
+							</div>
+							<div className="mt-4">
+								<Table listData={listWebsite} onSetPage={handleSetPage} onSetPageSize={handleSetPageSize} total={listSize} />
+							</div>
 						</div>
-						<div className="mt-4">
-							<Table listData={listWebsite} onSetPage={handleSetPage} onSetPageSize={handleSetPageSize} total={listSize} />
-						</div>
-					</div>
-					<div className="overflow-y-auto">
-						<div className="ml-4">
-							<h2 className="text-xl font-bold cursor-pointer hover:text-sky-700" onClick={() => { router.push('/security-news'); }}>Tin tức an ninh mạng</h2>
-						</div>
-						<div className="mt-4">
-							<ListArticle listData={listArticle} />
+						<div className="overflow-y-auto">
+							<div className="ml-4">
+								<h2 className="text-xl font-bold cursor-pointer hover:text-sky-700" onClick={() => { router.push('/security-news'); }}>Tin tức an ninh mạng</h2>
+							</div>
+							<div className="mt-4">
+								<ListArticle listData={listArticle} />
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+
+			</Card>
+
 
 			<Modal title={<>
 				<div className="text-center">Thông tin</div>
