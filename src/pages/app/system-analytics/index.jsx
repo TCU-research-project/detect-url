@@ -14,8 +14,9 @@ const PercentChart = dynamic(
 const SystemAnalytics = () => {
   return (
     <>
-      <PercentChart />
-      <QuantityChart />
+      <div>
+        Tính năng đang phát triển
+      </div>
     </>
   );
 };

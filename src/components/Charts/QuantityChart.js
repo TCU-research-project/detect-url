@@ -1,74 +1,82 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import moment from 'moment';
 
 const data = [
-  {
-    name: 'Page A',
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
-  },
-  {
-    name: 'Page B',
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
-  },
-  {
-    name: 'Page C',
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
-  },
-  {
-    name: 'Page D',
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: 'Page E',
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
-  },
-  {
-    name: 'Page F',
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    name: 'Page G',
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
+	{
+		name: 'Page A',
+		uv: 8,
+		pv: 4,
+	},
+	{
+		name: 'Page B',
+		uv: 10,
+		pv: 9,
+	},
+	{
+		name: 'Page C',
+		uv: 7,
+		pv: 9,
+	},
+	{
+		name: 'Page D',
+		uv: 8,
+		pv: 2,
+	},
+	{
+		name: 'Page E',
+		uv: 10,
+		pv: 15,
+	},
+	{
+		name: 'Page F',
+		uv: 4,
+		pv: 8,
+	},
+	{
+		name: 'Page G',
+		uv: 5,
+		pv: 7,
+	},
 ];
 
-export default function QuantityChart() {
-  return (
+const dataChart = [];
 
-    <ResponsiveContainer width="100%" height={400}>
-      <BarChart
-        width={500}
-        height={300}
-        data={data}
-        margin={{
-          top: 5,
-          right: 30,
-          left: 20,
-          bottom: 5,
-        }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        <Bar dataKey="pv" fill="#8884d8" />
-        <Bar dataKey="uv" fill="#82ca9d" />
-        <Bar dataKey="amt" fill="#FF7F50" />
-      </BarChart>
-    </ResponsiveContainer>
-  );
+let count = 1;
+
+for (let i in data) {
+	const appendData = {
+		name: moment().subtract(count, "days").format("DD-MM"),
+		uv: data[i].uv,
+		pv: data[i].pv
+	};
+	dataChart.push(appendData);
+	count++;
+}
+
+dataChart.reverse();
+
+export default function QuantityChart() {
+	return (
+		<ResponsiveContainer width="100%" height={400}>
+			<BarChart
+				width={500}
+				height={300}
+				data={dataChart}
+				margin={{
+					top: 5,
+					right: 30,
+					left: 20,
+					bottom: 5,
+				}}
+			>
+				<CartesianGrid strokeDasharray="3 3" />
+				<XAxis dataKey="name" />
+				<YAxis />
+				<Tooltip />
+				<Legend />
+				<Bar dataKey="uv" name='Website an toàn' fill="#0088FE" />
+				<Bar dataKey="pv" name='Website lừa đảo' fill="#DAA464" />
+			</BarChart>
+		</ResponsiveContainer>
+	);
 }
