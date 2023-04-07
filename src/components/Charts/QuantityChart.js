@@ -75,7 +75,7 @@ export default function QuantityChart() {
 				<Tooltip />
 				<Legend />
 				<Bar dataKey="uv" name='Website an toàn' fill="#0088FE" />
-				<Bar dataKey="pv" name='Website lừa đảo' fill="#DAA464" />
+				<Bar dataKey="pv" name='Website độc hại' fill="#DAA464" />
 			</BarChart>
 		</ResponsiveContainer>
 	);

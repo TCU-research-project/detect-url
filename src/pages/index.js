@@ -12,6 +12,17 @@ import { getListArticle } from '@/common/api/article';
 const QuantityChart = dynamic(import('@/components/Charts/QuantityChart'), { ssr: false });
 
 const PercentChart = dynamic(import('@/components/Charts/PercentChart'), { ssr: false });
+
+const generateStatus = (status) => {
+	if (status === 'safe') {
+		return 'Website an toàn';
+	}
+	if (status === 'malicious') {
+		return 'Website độc hại';
+	}
+};
+
+
 export default function Home() {
 	const [status, setStatus] = useState();
 	const [page, setPage] = useState(1);
@@ -27,8 +38,9 @@ export default function Home() {
 		setIsModalOpen(true);
 	};
 
-	const handleOk = () => {
+	const handleOk = async () => {
 		setIsModalOpen(false);
+		await handleListWebsite();
 	};
 
 	const handleCancel = async () => {
@@ -149,11 +161,16 @@ export default function Home() {
 			</Card>
 
 
-			<Modal title={<>
-				<div className="text-center">Thông tin</div>
-				<Divider />
-			</>} open={isModalOpen} onCancel={handleCancel} footer={null}>
-				<p className='text-center text-3xl'>{status}</p>
+			<Modal
+				title={
+					<>
+						<div className="text-center">Thông tin</div>
+						<Divider />
+					</>}
+				open={isModalOpen}
+				onCancel={handleCancel}
+				footer={null}>
+				<p className='text-center text-3xl'>{generateStatus(status)}</p>
 
 				<Divider />
 

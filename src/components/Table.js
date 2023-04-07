@@ -1,6 +1,15 @@
 import { Pagination } from "antd";
 import { useState } from "react";
 
+const generateStatus = (status) => {
+	if (status === 'safe') {
+		return 'Website an toàn';
+	}
+	if (status === 'malicious') {
+		return 'Website độc hại';
+	}
+};
+
 export default function Table(props) {
 	const { listData, onSetPage, onSetPageSize, total } = props;
 	const [startIndex, setStartIndex] = useState(1);
@@ -25,7 +34,7 @@ export default function Table(props) {
 									<td className="p-3 text-sm text-gray-700 whitespace-nowrap">{item.name}</td>
 									<td className="p-3 text-sm text-gray-700 whitespace-nowrap">
 										<span className="p-1.5 text-xs font-medium uppercase tracking-wider text-gray-800 bg-gray-200 rounded-lg bg-opacity-50">
-											{item.resultDetection}
+											{generateStatus(item.resultDetection)}
 										</span>
 									</td>
 								</tr>
