@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { message } from 'antd';
+import { message, Button } from 'antd';
 import { handleApi } from '@/utils';
 import { detectUrl } from '@/common/api/url';
 
 export default function SearchInput(props) {
 	const [url, setUrl] = useState('');
-	const { onSetStatus, onShowModal } = props;
+	const [loading, setLoading] = useState(false);
+	const { onSetStatus, onShowModal, onSetWhoisData } = props;
 
 	const handleChange = (event) => {
 		onSetStatus('');
@@ -14,14 +15,17 @@ export default function SearchInput(props) {
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
+		setLoading(true);
 		const response = await handleApi(detectUrl({ url: url }));
 		const { data } = response;
+		setLoading(false);
 		if (data) {
-			onSetStatus(data.data.resultDetection);
+			onSetStatus(data.data.response.resultDetection);
+			onSetWhoisData(data.data.whois);
 			onShowModal();
 		} else {
 			console.log(response);
-			message.error("Error");
+			message.error(response.error.message);
 		}
 	};
 	return (
@@ -30,7 +34,7 @@ export default function SearchInput(props) {
 				<label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">
 					Search
 				</label>
-				<div className="relative">
+				<div className="relative flex">
 					<div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
 						<svg
 							aria-hidden="true"
@@ -51,18 +55,16 @@ export default function SearchInput(props) {
 					<input
 						type="search"
 						id="default-search"
-						className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+						className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-l bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
 						placeholder="Nhập đường dẫn để kiểm tra"
 						value={url}
 						onChange={handleChange}
 						required
 					/>
-					<button
-						type="submit"
-						className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-					>
-						Check
-					</button>
+					<div>
+						<Button className='h-full bg-black text-lg rounded-l-none rounded-r' loading={loading} type="primary" htmlType="submit">Kiểm tra</Button>
+					</div>
+
 				</div>
 			</form>
 		</>

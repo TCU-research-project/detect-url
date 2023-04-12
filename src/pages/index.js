@@ -1,5 +1,5 @@
 import SearchInput from '@/components/SearchInput';
-import { Modal, Button, Divider, message, Card } from 'antd';
+import { Modal, Button, Divider, message, Card, Space } from 'antd';
 import ListArticle from '@/components/ListArticle';
 import Table from '@/components/Table';
 import AppLayout from '@/components/Layout';
@@ -11,7 +11,6 @@ import { useEffect, useState } from 'react';
 import { getListArticle } from '@/common/api/article';
 const QuantityChart = dynamic(import('@/components/Charts/QuantityChart'), { ssr: false });
 
-const PercentChart = dynamic(import('@/components/Charts/PercentChart'), { ssr: false });
 
 const generateStatus = (status) => {
 	if (status === 'safe') {
@@ -31,6 +30,7 @@ export default function Home() {
 	const [listWebsite, setListWebsite] = useState([]);
 	const [listArticle, setListArticle] = useState([]);
 	const [listSize, setListSize] = useState(0);
+	const [whoisData, setWhoisData] = useState("");
 
 	const router = useRouter();
 
@@ -58,6 +58,10 @@ export default function Home() {
 
 	const handleSetPageSize = (pageSize) => {
 		setPageSize(pageSize);
+	};
+
+	const handleSetWhoisData = (text) => {
+		setWhoisData(text);
 	};
 
 	const handleListWebsite = async () => {
@@ -91,40 +95,65 @@ export default function Home() {
 			<div className="grid grid-cols-4 gap-4">
 				<div></div>
 				<div className="col-span-2">
-					<SearchInput onSetStatus={handleSetStatus} onShowModal={showModal} />
+					<SearchInput onSetStatus={handleSetStatus} onShowModal={showModal} onSetWhoisData={handleSetWhoisData} />
 				</div>
 				<div></div>
 			</div>
-			<div className="grid grid-cols-2 gap-4 mt-16 mx-2">
-				<Card title={<>
-					<div className='text-center'>Tỉ lệ phát hiện chính xác</div>
-				</>} bordered={true} style={{}}>
-					<div className="flex mt-2">
-						<PercentChart />
-						<div className="flex items-center">
-							<div>
-								<div className="flex items-center">
-									{' '}
-									<div className="w-4 h-4 bg-[#0088FE] mr-2"></div> dương tính
-								</div>
-								<div className="flex items-center">
-									{' '}
-									<div className="w-4 h-4 bg-[#00C49F] mr-2"></div> dương tính giả
-								</div>
-								<div className="flex items-center">
-									{' '}
-									<div className="w-4 h-4 bg-[#FFBB28] mr-2"></div> âm tính
-								</div>
-								<div className="flex items-center">
-									{' '}
-									<div className="w-4 h-4 bg-[#FF8042] mr-2"></div> âm tính giả
-								</div>
+			<div className="mt-16 mx-4">
+				<div className='mb-2'>
+					<Card title={<>
+						<div className='text-center'>Dữ liệu về đường dẫn từ whois</div>
+					</>} bordered={true} style={{}}>
+						{whoisData && <>
+							<h2 className='text-center text-xl mb-2'>{`>>> Cập nhật lần cuối`}: {whoisData['>>> Last update of whois database']}</h2>
+							<div className='grid grid-cols-2 gap-4 mb-2'>
+								<Card title="Trạng thái" size="small">
+									{whoisData['Domain Status'].map((item, index) => (
+										<p key={index}>
+											{item}
+										</p>
+									))}
+								</Card>
+								<Card title="Máy chủ miền" size="small">
+									{whoisData['Name Server'].map((item, index) => (
+										<p key={index}>
+											{item}
+										</p>
+									))}
+								</Card>
 							</div>
-						</div>
-					</div>
-				</Card>
-
-
+							<div className='grid grid-cols-3 gap-4'>
+								<Card title="Tên miền" size="small">
+									<p>{whoisData['Domain Name']}</p>
+								</Card>
+								<Card title="Số ID miền đăng ký" size="small">
+									<p>{whoisData['Registry Domain ID']}</p>
+								</Card>
+								<Card title=" Máy chủ WHOIS của nhà đăng ký" size="small">
+									<p>{whoisData['Registrar WHOIS Server']}</p>
+								</Card>
+								<Card title="Registrar URL" size="small">
+									<p>{whoisData['Registrar URL']}</p>
+								</Card>
+								<Card title="Ngày tạo" size="small">
+									<p>{whoisData['Created Date']}</p>
+								</Card>
+								<Card title="Ngày cập nhật" size="small">
+									<p>{whoisData['Updated Date']}</p>
+								</Card>
+								<Card title="Ngày hết hạn" size="small">
+									<p>{whoisData['Expiry Date']}</p>
+								</Card>
+								<Card title="Nhà đăng ký" size="small">
+									<p>{whoisData['Registrar']}</p>
+								</Card>
+								<Card title="DNSSEC (Hệ thống bảo mật phân cấp tên miền)" size="small">
+									<p>{whoisData['DNSSEC']}</p>
+								</Card>
+							</div>
+						</>}
+					</Card>
+				</div>
 				<div>
 					<Card title={<>
 						<div className='text-center'>Số lượng website phát hiện gần đây</div>
@@ -136,7 +165,7 @@ export default function Home() {
 
 				</div>
 			</div>
-			<Card className='mx-2 my-2'>
+			<Card className='mx-4 my-2'>
 				<div className="relative mt-4 parent">
 					<div className="grid grid-cols-4 gap-4 p-4 child">
 						<div className="col-span-3 overflow-y-auto p-2">
