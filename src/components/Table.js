@@ -8,6 +8,9 @@ const generateStatus = (status) => {
 	if (status === 'malicious') {
 		return 'Website độc hại';
 	}
+	if (status === 'notFound') {
+		return 'Không tìm thấy đường dẫn';
+	}
 };
 
 export default function Table(props) {
@@ -46,7 +49,6 @@ export default function Table(props) {
 			<div className="flex justify-center mt-2">
 				<Pagination defaultCurrent={1} pageSize={10} total={total} onChange={(page, pageSize) => { onSetPage(page); onSetPageSize(pageSize); setStartIndex((page - 1) * pageSize + 1); }} />
 			</div>
-
 		</>
 	);
 }

@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  background-color: #e6e6ff;
+}
+
 .child {
   height: 100%;
 }
