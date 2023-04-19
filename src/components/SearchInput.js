@@ -6,7 +6,7 @@ import { detectUrl } from '@/common/api/url';
 export default function SearchInput(props) {
 	const [url, setUrl] = useState('');
 	const [loading, setLoading] = useState(false);
-	const { onSetStatus, onShowModal, onSetWhoisData } = props;
+	const { onSetStatus, onShowModal, onSetWhoisData, onSetNotFound } = props;
 
 	const handleChange = (event) => {
 		onSetStatus('');
@@ -20,7 +20,13 @@ export default function SearchInput(props) {
 		const { data } = response;
 		setLoading(false);
 		if (data) {
+			if (data.data.response.notFound) {
+				onSetNotFound(1);
+			} else {
+				onSetNotFound(0);
+			}
 			onSetStatus(data.data.response.resultDetection);
+
 			onSetWhoisData(data.data.whois);
 			onShowModal();
 		} else {

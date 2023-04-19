@@ -19,20 +19,20 @@ const generateStatus = (status) => {
 	if (status === 'malicious') {
 		return 'Website độc hại';
 	}
-	if (status === 'notFound') {
-		return 'Không tìm thấy đường dẫn';
-	}
 };
 
-const genBgColor = (status) => {
-	if (status === 'safe') {
-		return '#6699ff';
-	}
-	if (status === 'malicious') {
-		return '#E54646';
-	}
-	if (status === 'notFound') {
+
+
+const genBgColor = (status, notFound) => {
+	if (notFound === 1) {
 		return '#8c8c8c';
+	} else {
+		if (status === 'safe') {
+			return '#6699ff';
+		}
+		if (status === 'malicious') {
+			return '#E54646';
+		}
 	}
 };
 
@@ -46,6 +46,7 @@ export default function Home() {
 	const [listSize, setListSize] = useState(0);
 	const [whoisData, setWhoisData] = useState("");
 	const [loading, setLoading] = useState(false);
+	const [notFound, setNotFound] = useState(0);
 
 	const router = useRouter();
 
@@ -83,6 +84,10 @@ export default function Home() {
 		setLoading(value);
 	};
 
+	const handleSetNotFound = (value) => {
+		setNotFound(value);
+	};
+
 	const handleListWebsite = async () => {
 		const response = await handleApi(getListUrl(page, pageSize));
 		const { data } = response;
@@ -114,7 +119,7 @@ export default function Home() {
 			<div className="grid grid-cols-4 gap-4">
 				<div></div>
 				<div className="col-span-2">
-					<SearchInput onSetStatus={handleSetStatus} onShowModal={showModal} onSetWhoisData={handleSetWhoisData} onSetLoading={handleSetLoading} />
+					<SearchInput onSetStatus={handleSetStatus} onShowModal={showModal} onSetWhoisData={handleSetWhoisData} onSetLoading={handleSetLoading} onSetNotFound={handleSetNotFound} />
 				</div>
 				<div></div>
 			</div>
@@ -123,8 +128,8 @@ export default function Home() {
 					<Card title={<>
 						<div className='text-center'>Dữ liệu về đường dẫn từ whois</div>
 					</>} bordered={true}
-						headStyle={{ backgroundColor: genBgColor(status) }}
-						bodyStyle={{ backgroundColor: genBgColor(status) }}
+						headStyle={{ backgroundColor: genBgColor(status, notFound) }}
+						bodyStyle={{ backgroundColor: genBgColor(status, notFound) }}
 						loading={loading}>
 						{whoisData['Domain Status']?.length ? <>
 							<h2 className='text-center text-xl mb-2'>{`>>> Cập nhật lần cuối`}: {whoisData['>>> Last update of whois database']}</h2>
@@ -175,7 +180,7 @@ export default function Home() {
 							</div>
 						</> : <>
 							<div className='text-center text-lg font-bold uppercase'>
-								Không tìm thấy địa chỉ trang web
+								Không tìm thấy dữ liệu về đường dẫn trên whois
 							</div>
 						</>}
 					</Card>

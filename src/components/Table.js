@@ -2,15 +2,14 @@ import { Pagination } from "antd";
 import { useState } from "react";
 
 const generateStatus = (status) => {
+
 	if (status === 'safe') {
 		return 'Website an toàn';
 	}
 	if (status === 'malicious') {
 		return 'Website độc hại';
 	}
-	if (status === 'notFound') {
-		return 'Không tìm thấy đường dẫn';
-	}
+
 };
 
 export default function Table(props) {
@@ -37,7 +36,7 @@ export default function Table(props) {
 									<td className="p-3 text-sm text-gray-700 whitespace-nowrap">{item.name}</td>
 									<td className="p-3 text-sm text-gray-700 whitespace-nowrap">
 										<span className="p-1.5 text-xs font-medium uppercase tracking-wider text-gray-800 bg-gray-200 rounded-lg bg-opacity-50">
-											{generateStatus(item.resultDetection)}
+											{generateStatus(item.resultDetection, item.notFound)}
 										</span>
 									</td>
 								</tr>
