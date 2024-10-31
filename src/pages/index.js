@@ -11,7 +11,6 @@ import { useEffect, useState } from 'react';
 import { getListArticle } from '@/common/api/article';
 const QuantityChart = dynamic(import('@/components/Charts/QuantityChart'), { ssr: false });
 
-
 const generateStatus = (status) => {
 	if (status === 'safe') {
 		return 'Website an toàn';
@@ -131,7 +130,7 @@ export default function Home() {
 						headStyle={{ backgroundColor: genBgColor(status, notFound) }}
 						bodyStyle={{ backgroundColor: genBgColor(status, notFound) }}
 						loading={loading}>
-						{whoisData['Domain Status']?.length ? <>
+						{whoisData?.['Domain Status']?.length ? <>
 							<h2 className='text-center text-xl mb-2'>{`>>> Cập nhật lần cuối`}: {whoisData['>>> Last update of whois database']}</h2>
 							<div className='grid grid-cols-2 gap-4 mb-2'>
 								<Card title="Trạng thái" size="small">

@@ -5,4 +5,4 @@ import queryString from 'query-string';
 export const getListUrl = (page = null, pageSize = null) => () =>
 	fetchApi(`url/list?${queryString.stringify({ page, page_size: pageSize })}`, null, METHOD.GET, {});
 
-export const detectUrl = (data) => () => fetchApi(`url/detect-url`, data, METHOD.POST, {});
+export const detectUrl = (data) => () => fetchApi(`url/detect-url?url=${data.url}`, {}, METHOD.GET, {});
